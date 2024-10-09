@@ -2,7 +2,10 @@
 ## Getting Started
 
 Clone and run the development server:
+(make sure to add cloudinary credentials in .env, refer .enc.example)
 
+
+ma
 ```bash
 npm run dev
 # or
