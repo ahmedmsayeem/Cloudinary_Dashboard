@@ -3,6 +3,9 @@
 
 Clone and run the development server:
 (make sure to add cloudinary credentials in .env, refer .enc.example)
+
+
+
 ```bash
 npm run dev
 # or
