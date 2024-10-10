@@ -96,7 +96,7 @@ export default function Options({
             <div className="content">
               <Input
                 value={newFolderName}
-                onChange={(e) => setNewFolderName(e.target.value)}
+                onChange={(e:React.ChangeEvent<HTMLInputElement>) => setNewFolderName(e.target.value)}
                 placeholder="Folder name"
               />
             </div>

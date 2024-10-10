@@ -33,14 +33,15 @@ export default function UploadForm({
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
-    for (const entry of formData?.entries()) {
-      const [, value] = entry;
+    for (const [, value] of formData.entries()) {
+      if (typeof value === "string") continue; // Skip non-file fields
       if (value instanceof File) {
-        const previewUrl = URL.createObjectURL(value);
+        const previewUrl: string = URL.createObjectURL(value); // Safely typed as string
         setPreview(previewUrl);
         console.log(preview);
       }
     }
+    
   };
   const handleUpload = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

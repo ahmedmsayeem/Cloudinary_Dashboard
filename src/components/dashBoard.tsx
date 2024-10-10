@@ -8,7 +8,6 @@ import FolderIcon, {
 } from "./folderIcon";
 import Images from "./images";
 import Options from "./options";
-import UploadForm from "./upload";
 
 export default function Dashboard() {
   const [folders, setFolders] = useState<
@@ -95,9 +94,6 @@ export default function Dashboard() {
         fetchImagesByPathOfFolder={fetchImagesByPathOfFolder}
       />
 
-      {/* <div className="w-[100vw] m-12"></div>
-      <UploadForm folderPath={rootPath} fetchImagesByPathOfFolder={fetchImagesByPathOfFolder}></UploadForm>
-       */}
 
       <div className="mx-4 my-6 ">
         <p
