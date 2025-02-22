@@ -29,10 +29,13 @@ export default function Home() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
+        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white relative">
             <div className="text-center mb-8">
-                <h1 className="text-4xl font-bold mb-2 text-blue-400">Welcome to the Dashboard</h1>
-                <p className="text-gray-400 text-lg">Manage your project media with your team efficiently</p>
+                {(!selected || !showCloudinary) && 
+                <div>
+                    <h1 className="text-4xl font-bold mb-2 text-blue-400">Welcome to the Dashboard</h1>
+                    <p className="text-gray-400 text-lg">Manage your project media with your team efficiently</p>
+                </div>}
             </div>
             <div className="flex space-x-8">
                 <label className="flex items-center space-x-2 cursor-pointer">
@@ -46,6 +49,10 @@ export default function Home() {
             </div>
             {selected && showCloudinary && <div className="mt-8"><Dashboard /></div>}
             {selected && showUploadthing && <div className="mt-8 text-green-400 text-2xl text-center">Coming soon...</div>}
+
+            <div className="absolute bottom-4 right-4">
+                <p className="text-red-400">Note: Your API keys are not saved anywhere outside your using instance</p>
+            </div>
         </div>
     );
 }
