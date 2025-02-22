@@ -4,7 +4,7 @@ import { FaCopy } from "react-icons/fa";
 import { SlOptionsVertical } from "react-icons/sl";
 import { toast } from "sonner";
 
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 import {
   Dialog,
   DialogContent,

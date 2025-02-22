@@ -1,13 +1,10 @@
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
-
-import FolderIcon, {
-  type CloudinaryResource,
-  type CloudinaryResponse,
-  createPathArray,
-} from "./folderIcon";
+import FolderIcon, { CloudinaryResource, CloudinaryResponse, createPathArray } from "./folderIcon";
 import Images from "./images";
 import Options from "./options";
+import Creds from "./cCreds";
+
 
 export default function Dashboard() {
   const [folders, setFolders] = useState<
@@ -86,6 +83,8 @@ export default function Dashboard() {
 
   return (
     <div className="relative z-50 sm:top-[0px] md:top-[-80px]">
+      <Creds></Creds>
+      <br /> <br />
       
       <Options
         rootPath={rootPath}

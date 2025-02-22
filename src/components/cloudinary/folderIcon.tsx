@@ -9,8 +9,8 @@ import {   Dialog,
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle, } from "./ui/dialog";
-import { Button } from "./ui/button";
+  DialogTitle, } from "../ui/dialog";
+import { Button } from "../ui/button";
 
 
 export interface CloudinaryResource {
