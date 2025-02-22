@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import { cloudinary } from "./constant";
+import { SignApiOptions } from "cloudinary";
 
 // Define the shape of the response from Cloudinary
 interface CloudinaryResource {
@@ -28,6 +29,13 @@ export default async function handler(
 
   try {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    const {  cloudName, apiKey, apiSecret } = req.body as SignApiOptions & { cloudName: string, apiKey: string, apiSecret: string };
+    
+    cloudinary.config({
+      cloud_name: cloudName,
+      api_key: apiKey,
+      api_secret: apiSecret,
+  });
     const result = await cloudinary.api.resources({
       type: "upload",
       prefix: path !== "/" ? path : "", // Specify the folder path here

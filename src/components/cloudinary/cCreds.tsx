@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 
 export default function Creds(){
-    const [cloudName, setCloudName] = useState<string>("");
-    const [apiKey, setApiKey] = useState<string>("");
-    const [apiSecret, setApiSecret] = useState<string>("");
+    const [cloudName, setCloudName] = useState<string>(localStorage.getItem('cloudName') || "");
+    const [apiKey, setApiKey] = useState<string>(localStorage.getItem('apiKey') || "");
+    const [apiSecret, setApiSecret] = useState<string>(localStorage.getItem('apiSecret') || "");
     const [isMinimized, setIsMinimized] = useState<boolean>(false);
 
     const handleSave = async () => {
         try {
+            localStorage.setItem('cloudName', cloudName);
+            localStorage.setItem('apiKey', apiKey);
+            localStorage.setItem('apiSecret', apiSecret);
             await fetch('/api/cloudinary/config', {
                 method: 'POST',
                 headers: {

@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
 import { cloudinary } from "./constant";
+import { SignApiOptions } from "cloudinary";
 
 // Regular expression pattern to match Cloudinary public_id from URL
 const regex = /\/v\d+\/(.*?)(?=\.)/;
@@ -10,8 +11,14 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   try {
+    const {  cloudName, apiKey, apiSecret } = req.body as SignApiOptions & { cloudName: string, apiKey: string, apiSecret: string };
     const { url } = req.body as { url: string };
-
+    
+    cloudinary.config({
+      cloud_name: cloudName,
+      api_key: apiKey,
+      api_secret: apiSecret,
+  });
     // Function to extract public_id from Cloudinary URL
     const getPublicIdFromUrl = (url: string) => {
       const match = url.match(regex);

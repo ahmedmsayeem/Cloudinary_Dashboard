@@ -46,7 +46,7 @@ export default function Options({
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ rootPath: fullPath }),
+       body: JSON.stringify({ rootPath: fullPath }),
       });
 
       if (!response.ok) {

@@ -28,12 +28,15 @@ export default function Images({
 
   const handleDelete = async () => {
     try {
+      const cloudName = localStorage.getItem('cloudName');
+      const apiKey = localStorage.getItem('apiKey');
+      const apiSecret = localStorage.getItem('apiSecret');
       const response = await fetch("/api/cloudinary/deleteWithPublicId", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ public_id: image.public_id }),
+        body: JSON.stringify({ public_id: image.public_id, cloudName, apiKey, apiSecret }),
       });
 
       if (response.ok) {

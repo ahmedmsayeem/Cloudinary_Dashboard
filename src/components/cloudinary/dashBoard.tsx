@@ -5,7 +5,6 @@ import Images from "./images";
 import Options from "./options";
 import Creds from "./cCreds";
 
-
 export default function Dashboard() {
   const [folders, setFolders] = useState<
     { name: string; path: string; external_id: string }[]
@@ -23,12 +22,15 @@ export default function Dashboard() {
   useEffect(() => {
     const endpoint =
       rootPath === "/" ? "/api/cloudinary/listDir" : "/api/cloudinary/findDir";
+    const cloudName = localStorage.getItem('cloudName');
+    const apiKey = localStorage.getItem('apiKey');
+    const apiSecret = localStorage.getItem('apiSecret');
     fetch(endpoint, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ path: rootPath }),
+      body: JSON.stringify({ path: rootPath, cloudName, apiKey, apiSecret }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -53,13 +55,16 @@ export default function Dashboard() {
   }, [rootPath, imageLoadPermisiion]);
 
   const fetchImagesByPathOfFolder = async (path: string) => {
+    const cloudName = localStorage.getItem('cloudName');
+    const apiKey = localStorage.getItem('apiKey');
+    const apiSecret = localStorage.getItem('apiSecret');
     try {
       const response = await fetch("/api/cloudinary/getImages", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ path }),
+        body: JSON.stringify({ path, cloudName, apiKey, apiSecret }),
       });
 
       if (!response.ok) throw new Error("Network response was not ok");
@@ -92,7 +97,6 @@ export default function Dashboard() {
         setRootPath={setRootPath}
         fetchImagesByPathOfFolder={fetchImagesByPathOfFolder}
       />
-
 
       <div className="mx-4 my-6 ">
         <p

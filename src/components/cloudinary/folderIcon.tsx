@@ -55,19 +55,21 @@ export default function FolderIcon({
 
   const deleteDir = async () => {
     try {
+      const cloudName = localStorage.getItem('cloudName');
+      const apiKey = localStorage.getItem('apiKey');
+      const apiSecret = localStorage.getItem('apiSecret');
       const response = await fetch("/api/cloudinary/deleteDir", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ path }),
+        body: JSON.stringify({ path, cloudName, apiKey, apiSecret }),
       });
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
 
-      // const data = await response.json();
       toast.success("Deleted successfully:");
       setDeleteAlert(false);
     } catch (error) {
