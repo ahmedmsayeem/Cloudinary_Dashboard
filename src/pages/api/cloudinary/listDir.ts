@@ -8,7 +8,9 @@ export default async function handler(
   res: NextApiResponse,
 ) {
   const {  cloudName, apiKey, apiSecret } = req.body as SignApiOptions & { cloudName: string, apiKey: string, apiSecret: string };
-  
+  console.log("----------------------------------");
+  console.log(cloudName, apiKey, apiSecret);
+  console.log("----------------------------------");
   cloudinary.config({
     cloud_name: cloudName,
     api_key: apiKey,

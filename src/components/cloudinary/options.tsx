@@ -29,6 +29,9 @@ export default function Options({
   fetchImagesByPathOfFolder: (path: string) => void;
 }) {
   const [newFolderName, setNewFolderName] = useState<string>("");
+    const cloudName = localStorage.getItem('cloudName');
+    const apiKey = localStorage.getItem('apiKey');
+    const apiSecret = localStorage.getItem('apiSecret');
 
   const createFolder = async () => {
     try {
@@ -46,7 +49,7 @@ export default function Options({
         headers: {
           "Content-Type": "application/json",
         },
-       body: JSON.stringify({ rootPath: fullPath }),
+       body: JSON.stringify({ rootPath: fullPath, cloudName, apiKey, apiSecret }),
       });
 
       if (!response.ok) {

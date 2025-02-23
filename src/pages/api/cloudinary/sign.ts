@@ -6,10 +6,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     const { paramsToSign, cloudName, apiKey, apiSecret } = req.body as SignApiOptions & { cloudName: string, apiKey: string, apiSecret: string };
 
     cloudinary.config({
-        cloud_name: cloudName,
-        api_key: apiKey,
-        api_secret: apiSecret,
-    });
+        cloud_name: cloudName?.toString() as unknown as string,
+        api_key: apiKey?.toString(),//apiKey as unknown as string,
+        api_secret: apiSecret?.toString() as unknown as string,
+      });
 
     const signature = cloudinary.utils.api_sign_request(
         paramsToSign as SignApiOptions,

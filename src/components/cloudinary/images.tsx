@@ -66,7 +66,7 @@ export default function Images({
         src={`${image.secure_url.replace("/image/upload/", "/image/upload/c_thumb,w_200,g_face/")}`}
         alt={image.public_id}
         width={200} // Match the width with the thumbnail transformation
-        height={Math.floor((200 / image.width) * image.height)} // Adjust height proportionally
+        height={image.height ? Math.floor((200 / image.width) * image.height) : 200} // Adjust height proportionally
         className="h-full w-full object-cover"
       />
       <div className="relative right-10 top-2 h-fit  w-fit rounded-sm bg-slate-800 p-1">

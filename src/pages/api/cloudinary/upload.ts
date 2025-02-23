@@ -24,10 +24,13 @@ export default async function handler(
 
     const { cloudName, apiKey, apiSecret } = fields;
     cloudinary.config({
-      cloud_name: cloudName as unknown as string,
-      api_key: apiKey as unknown as string,
-      api_secret: apiSecret as unknown as string,
+      cloud_name: cloudName?.toString() as unknown as string,
+      api_key: apiKey?.toString(),//apiKey as unknown as string,
+      api_secret: apiSecret?.toString() as unknown as string,
     });
+    console.log("----------------------------------");
+    console.log(cloudName, typeof(apiKey), apiSecret);
+    console.log("----------------------------------");
 
     const file = files.file?.[0]; // Extract the file from the parsed data
 

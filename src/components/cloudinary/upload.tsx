@@ -41,8 +41,8 @@ export default function UploadForm({
         console.log(preview);
       }
     }
+    
   };
-
   const handleUpload = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -51,7 +51,6 @@ export default function UploadForm({
 
     // Append folderPath as a query parameter
     const queryString = new URLSearchParams({ folder: folderPath }).toString();
-
     const cloudName = localStorage.getItem('cloudName');
     const apiKey = localStorage.getItem('apiKey');
     const apiSecret = localStorage.getItem('apiSecret');
@@ -68,7 +67,7 @@ export default function UploadForm({
 
       const data = (await response.json()) as UploadApiResponse;
       if (response.ok) {
-        toast.success("uploaded successfully");
+        toast.success("uploaded succesfully");
         setImageUrl(data.url); // Set the URL to state for displaying
       } else {
         toast.error(`Upload failed: ${data.error}`);
