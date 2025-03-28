@@ -20,69 +20,73 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    const endpoint =
-      rootPath === "/" ? "/api/cloudinary/listDir" : "/api/cloudinary/findDir";
-    const cloudName = localStorage.getItem('cloudName');
-    const apiKey = localStorage.getItem('apiKey');
-    const apiSecret = localStorage.getItem('apiSecret');
-    fetch(endpoint, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ path: rootPath, cloudName, apiKey, apiSecret }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log("Data received:", data);
-        const typedData = (data = data as {
-          folders: { name: string; path: string; external_id: string }[];
-        });
-        setFolders(typedData.folders);
-      })
-      .catch((error) => {
-        console.error("There was a problem with the fetch operation:", error);
-      });
-
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    imageLoadPermisiion ? void fetchImagesByPathOfFolder("/") : "";
-    setIMageLoadPermision(false);
-  }, [rootPath, imageLoadPermisiion]);
-
-  const fetchImagesByPathOfFolder = async (path: string) => {
-    const cloudName = localStorage.getItem('cloudName');
-    const apiKey = localStorage.getItem('apiKey');
-    const apiSecret = localStorage.getItem('apiSecret');
-    try {
-      const response = await fetch("/api/cloudinary/getImages", {
+    if (typeof window !== "undefined") { // Ensure this runs only on the client side
+      const endpoint =
+        rootPath === "/" ? "/api/cloudinary/listDir" : "/api/cloudinary/findDir";
+      const cloudName = localStorage.getItem('cloudName');
+      const apiKey = localStorage.getItem('apiKey');
+      const apiSecret = localStorage.getItem('apiSecret');
+      fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ path, cloudName, apiKey, apiSecret }),
-      });
+        body: JSON.stringify({ path: rootPath, cloudName, apiKey, apiSecret }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("Data received:", data);
+          const typedData = (data = data as {
+            folders: { name: string; path: string; external_id: string }[];
+          });
+          setFolders(typedData.folders);
+        })
+        .catch((error) => {
+          console.error("There was a problem with the fetch operation:", error);
+        });
 
-      if (!response.ok) throw new Error("Network response was not ok");
+      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+      imageLoadPermisiion ? void fetchImagesByPathOfFolder("/") : "";
+      setIMageLoadPermision(false);
+    }
+  }, [rootPath, imageLoadPermisiion]);
 
-      const data = (await response.json()) as CloudinaryResponse;
+  const fetchImagesByPathOfFolder = async (path: string) => {
+    if (typeof window !== "undefined") { // Ensure this runs only on the client side
+      const cloudName = localStorage.getItem('cloudName');
+      const apiKey = localStorage.getItem('apiKey');
+      const apiSecret = localStorage.getItem('apiSecret');
+      try {
+        const response = await fetch("/api/cloudinary/getImages", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ path, cloudName, apiKey, apiSecret }),
+        });
 
-      // Check if resources are present and set the images state
-      if (data.resources && data.resources.length > 0) {
-        setImages(data.resources);
-      } else {
-        // If no resources are found, set images to an empty array
+        if (!response.ok) throw new Error("Network response was not ok");
+
+        const data = (await response.json()) as CloudinaryResponse;
+
+        // Check if resources are present and set the images state
+        if (data.resources && data.resources.length > 0) {
+          setImages(data.resources);
+        } else {
+          // If no resources are found, set images to an empty array
+          setImages([]);
+        }
+      } catch (error) {
+        // Handle errors
+        console.error("There was a problem with the fetch operation:", error);
+        // Set images to an empty array in case of error
         setImages([]);
       }
-    } catch (error) {
-      // Handle errors
-      console.error("There was a problem with the fetch operation:", error);
-      // Set images to an empty array in case of error
-      setImages([]);
     }
   };
 

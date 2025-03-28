@@ -1,4 +1,6 @@
-import Dashboard from "@/components/cloudinary/dashBoard";
+import dynamic from "next/dynamic";
+
+const Dashboard = dynamic(() => import("@/components/cloudinary/dashBoard"), { ssr: false });
 
 export default function CloudinaryPage() {
     return (
