@@ -49,7 +49,7 @@ export default function Options({
         headers: {
           "Content-Type": "application/json",
         },
-       body: JSON.stringify({ rootPath: fullPath, cloudName, apiKey, apiSecret }),
+        body: JSON.stringify({ rootPath: fullPath, cloudName, apiKey, apiSecret }),
       });
 
       if (!response.ok) {
@@ -57,8 +57,13 @@ export default function Options({
       }
 
       if (response.ok) {
-        console.log("Data received:");
         toast.success("Folder created successfully");
+  setNewFolderName("");
+  // Force folder list refresh by toggling rootPath
+  setRootPath((prev) => prev === "/" ? "/tmp_refresh" : "/");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  setTimeout(() => setRootPath((_prev) => rootPath), 0);
+  fetchImagesByPathOfFolder(rootPath); // refresh images in current folder
       }
     } catch (error) {
       console.error("Error:", error);

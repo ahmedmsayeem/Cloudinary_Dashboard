@@ -40,12 +40,18 @@ export default function Images({
       });
 
       if (response.ok) {
-        toast("deleted succesfully");
+        toast.success("Deleted successfully");
+        // Force folder and image list refresh by toggling rootPath
+        if (typeof window !== "undefined") {
+          const event = new CustomEvent("cloudinaryRefresh");
+          window.dispatchEvent(event);
+        }
       } else {
+        toast.error("Delete failed");
       }
     } catch (error) {
       console.error("Error during fetch:", error);
-      toast("couldnt delete");
+      toast.error("Couldn't delete");
     }
   };
 

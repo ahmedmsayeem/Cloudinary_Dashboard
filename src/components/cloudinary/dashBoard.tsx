@@ -20,39 +20,45 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    if (typeof window !== "undefined") { // Ensure this runs only on the client side
-      const endpoint =
-        rootPath === "/" ? "/api/cloudinary/listDir" : "/api/cloudinary/findDir";
-      const cloudName = localStorage.getItem('cloudName');
-      const apiKey = localStorage.getItem('apiKey');
-      const apiSecret = localStorage.getItem('apiSecret');
-      fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ path: rootPath, cloudName, apiKey, apiSecret }),
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
+    if (typeof window !== "undefined") {
+      const doRefresh = () => {
+        const endpoint =
+          rootPath === "/" ? "/api/cloudinary/listDir" : "/api/cloudinary/findDir";
+        const cloudName = localStorage.getItem('cloudName');
+        const apiKey = localStorage.getItem('apiKey');
+        const apiSecret = localStorage.getItem('apiSecret');
+        fetch(endpoint, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ path: rootPath, cloudName, apiKey, apiSecret }),
         })
-        .then((data) => {
-          console.log("Data received:", data);
-          const typedData = (data = data as {
-            folders: { name: string; path: string; external_id: string }[];
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Data received:", data);
+            const typedData = (data = data as {
+              folders: { name: string; path: string; external_id: string }[];
+            });
+            setFolders(typedData.folders);
+          })
+          .catch((error) => {
+            console.error("There was a problem with the fetch operation:", error);
           });
-          setFolders(typedData.folders);
-        })
-        .catch((error) => {
-          console.error("There was a problem with the fetch operation:", error);
-        });
 
-      // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-      imageLoadPermisiion ? void fetchImagesByPathOfFolder("/") : "";
-      setIMageLoadPermision(false);
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        imageLoadPermisiion ? void fetchImagesByPathOfFolder("/") : "";
+        setIMageLoadPermision(false);
+      };
+      doRefresh();
+      const handler = () => doRefresh();
+      window.addEventListener("cloudinaryRefresh", handler);
+      return () => window.removeEventListener("cloudinaryRefresh", handler);
     }
   }, [rootPath, imageLoadPermisiion]);
 

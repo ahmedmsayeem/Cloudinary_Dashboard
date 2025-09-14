@@ -55,9 +55,9 @@ export default function UploadForm({
     const apiKey = localStorage.getItem('apiKey');
     const apiSecret = localStorage.getItem('apiSecret');
 
-  formData.append('cloudName', cloudName || '');
-  formData.append('apiKey', apiKey || '');
-  formData.append('apiSecret', apiSecret || '');
+    formData.append('cloudName', cloudName || '');
+    formData.append('apiKey', apiKey || '');
+    formData.append('apiSecret', apiSecret || '');
 
     try {
       const response = await fetch(`/api/cloudinary/upload?${queryString}`, {
@@ -67,8 +67,9 @@ export default function UploadForm({
 
       const data = (await response.json()) as UploadApiResponse;
       if (response.ok) {
-        toast.success("uploaded succesfully");
+        toast.success("Uploaded successfully");
         setImageUrl(data.url); // Set the URL to state for displaying
+        fetchImagesByPathOfFolder(folderPath); // Auto-refresh after upload
       } else {
         toast.error(`Upload failed: ${data.error}`);
       }
@@ -106,10 +107,7 @@ export default function UploadForm({
           <div className="content">
             <form
               onChange={(e) => handleChange(e)}
-              onSubmit={(e) => {
-                void handleUpload(e);
-                fetchImagesByPathOfFolder(folderPath);
-              }}
+              onSubmit={handleUpload}
             >
               <input type="file" name="file" accept="image/*" required />
               {preview && (
