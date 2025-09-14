@@ -16,7 +16,7 @@ export default function Dashboard() {
   const router = useRouter();
 
   const handleRefresh = () => {
-    void router.push("/");
+    void router.push("/cloudinary");
   };
 
   useEffect(() => {

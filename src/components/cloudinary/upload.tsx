@@ -55,9 +55,9 @@ export default function UploadForm({
     const apiKey = localStorage.getItem('apiKey');
     const apiSecret = localStorage.getItem('apiSecret');
 
-    formData.append('cloudName', cloudName || '');
-    formData.append('apiKey', apiKey || '');
-    formData.append('apiSecret', apiSecret || '');
+  formData.append('cloudName', cloudName || '');
+  formData.append('apiKey', apiKey || '');
+  formData.append('apiSecret', apiSecret || '');
 
     try {
       const response = await fetch(`/api/cloudinary/upload?${queryString}`, {

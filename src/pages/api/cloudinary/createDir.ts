@@ -12,9 +12,9 @@ export default async function handler(
     const {  cloudName, apiKey, apiSecret } = req.body as SignApiOptions & { cloudName: string, apiKey: string, apiSecret: string };
     console.log("cloudName, apiKey, apiSecret", cloudName, apiKey, apiSecret);
     cloudinary.config({
-      cloud_name: cloudName?.toString() as unknown as string,
-      api_key: apiKey?.toString(),//apiKey as unknown as string,
-      api_secret: apiSecret?.toString() as unknown as string,
+      cloud_name: Array.isArray(cloudName) ? cloudName[0] : cloudName,
+      api_key: Array.isArray(apiKey) ? apiKey[0] : apiKey,
+      api_secret: Array.isArray(apiSecret) ? apiSecret[0] : apiSecret,
     });
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const folders = await cloudinary.api.create_folder(rootPath);

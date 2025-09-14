@@ -23,13 +23,18 @@ export default async function handler(
     }
 
     const { cloudName, apiKey, apiSecret } = fields;
+    console.log("Received credentials:", {
+      cloudName,
+      apiKey,
+      apiSecret,
+    });
     cloudinary.config({
-      cloud_name: cloudName?.toString() as unknown as string,
-      api_key: apiKey?.toString(),//apiKey as unknown as string,
-      api_secret: apiSecret?.toString() as unknown as string,
+      cloud_name: cloudName?.toString() as string,
+      api_key: apiKey?.toString(),
+      api_secret: apiSecret?.toString() as string,
     });
     console.log("----------------------------------");
-    console.log(cloudName, typeof(apiKey), apiSecret);
+    console.log("Configured Cloudinary with above credentials");
     console.log("----------------------------------");
 
     const file = files.file?.[0]; // Extract the file from the parsed data
@@ -47,23 +52,14 @@ export default async function handler(
         res.status(500).json({ error: "File was not received in backend" });
       }
 
-      const paramsToSign = {
-        public_id: file.originalFilename as unknown as string,
+
+      const uploadOptions: Record<string, unknown> = {
+        folder: folder && folder !== "/" ? folder : undefined,
+        public_id: file.originalFilename as string,
         resource_type: "image",
-        type: "upload",
-        timestamp: Math.floor(Date.now() / 1000),
-      };
-
-      const signature = cloudinary.utils.api_sign_request(
-        paramsToSign,
-        apiSecret as unknown as string,
-      );
-
-      const uploadResult = await cloudinary.uploader.upload(file.filepath, {
-        folder: folder != "/" ? folder : "",
-        public_id: signature, // signed URL now safe
         secure: true,
-      });
+      };
+      const uploadResult = await cloudinary.uploader.upload(file.filepath, uploadOptions);
       res.status(200).json({ url: uploadResult.secure_url });
     } catch (readError) {
       console.error("Error reading the file:", readError);
